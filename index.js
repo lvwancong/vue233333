@@ -57,9 +57,10 @@ server.use(express.static("public"));
 //5.获取数据库返回结果
 //6.返回客户数据
 //登录
-server.get("/login",(req,res)=>{
-    var u=req.query.uname;
-    var p=req.query.upwd;
+//登录
+server.post("/login",(req,res)=>{
+    var u=req.body.uname;
+    var p=req.body.upwd;
     var sql = "select Uid,Uname from eaterytwo_userbasicinformation where Uname=? and Upwd=?";
     pool.query(sql,[u,p],(err,result)=>{
         if(err) throw err;
@@ -137,11 +138,11 @@ server.get("/Userhead", (req, res) => {
 
 
 //功能四：注册
-server.get("/register",(req,res)=>{
-    var u=req.query.uname;
-    var p=req.query.upwd;
-    var eil = req.query.uemail;
-    var t = req.query.uphone;
+server.post("/register",(req,res)=>{
+  var u = req.body.uname;
+  var p = req.body.upwd;
+  var eil = req.body.uemail;
+  var t = req.body.uphone;
     if(!u){res.send("用户名不存在");return;}
     if(!p){res.send("密码不存在");return;}
     if(!eil){res.send("email不存在");return;}
