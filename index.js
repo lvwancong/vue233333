@@ -51,7 +51,7 @@ server.use(bodyParser.urlencoded({
     extended:false
 }))
 //4.为express对象绑定监听端口 3000
-server.listen(3000, (err) => {
+server.listen(5050, (err) => {
 	if(err) throw err;
 	console.log('yes');
 });
