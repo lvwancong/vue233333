@@ -7,11 +7,11 @@ const cors = require('cors');
 
 //创建连接池
 var pool=mysql.createPool({
-  host: process.env.MYSQL_HOST,
-  port: process.env.MYSQL_PORT,
-  user: process.env.ACCESSKEY,
-  password: process.env.SECRETKEY,
-  database: 'app_' + process.env.APPNAME, //使用的数据库
+	host     : process.env.MYSQL_HOST,
+    port     : process.env.MYSQL_PORT,
+    user     : process.env.ACCESSKEY,
+    password : process.env.SECRETKEY,
+    database : 'app_' + process.env.APPNAME, //使用的数据库
 	connectionLimit:20  //设置连接池的数量
 });
 // 3.创建express对象
@@ -57,7 +57,6 @@ server.use(express.static("public"));
 //5.获取数据库返回结果
 //6.返回客户数据
 //登录
-//登录
 server.post("/login",(req,res)=>{
     var u=req.body.uname;
     var p=req.body.upwd;
@@ -91,8 +90,8 @@ server.post("/login",(req,res)=>{
     })
 });
 //功能3.2 查重
-server.get('/inquire', (req, res) => {
-	var u = req.query.uname;
+server.post('/inquire', (req, res) => {
+	var u = req.body.uname;
 	//数据库查询数据
 	var sql="SELECT Uname FROM eaterytwo_userbasicinformation where Uname=?";
 	pool.query(sql,[u],(err,result)=>{
@@ -121,18 +120,19 @@ server.get("/Userhead", (req, res) => {
       //sql语句执行完毕并且返回解果
       if(result.length==0){
         // insert
-        Uimg="http://127.0.0.1:3000/img/Userhead/xinling.jpg";
+        Uimg="img/Userhead/xinling.jpg";
         var sql = `insert into eaterytwo_Userhead`;
         sql+=` values(null,${uid},'${Uimg}')`;
+        pool.query(sql,(err,result)=>{
+          if(err) throw err;
+          res.send({ code: 1, data: [Uimg]})
+        });
       }else{
         // select
-        var sql = `select Uid,Uimg from eaterytwo_Userhead`;
-        sql+=` where Uid = ${uid}`;
+        // var sql = `select Uid,Uimg from eaterytwo_Userhead`;
+        // sql+=` where Uid = ${uid}`;
+        res.send({ code: 1, data: result })
       }
-      pool.query(sql,(err,result)=>{
-        if(err) throw err;
-        res.send({code:1,data:result})
-      });
   });
 });
 
@@ -143,10 +143,6 @@ server.post("/register",(req,res)=>{
   var p = req.body.upwd;
   var eil = req.body.uemail;
   var t = req.body.uphone;
-    if(!u){res.send("用户名不存在");return;}
-    if(!p){res.send("密码不存在");return;}
-    if(!eil){res.send("email不存在");return;}
-    if(!t){res.send("号码不存在");return;}
     //数据库修改数据
     var sql = "insert into eaterytwo_userbasicinformation values(null,?,?,?,?)"
     pool.query(sql,[u,p,eil,t],(err,result)=>{
@@ -272,7 +268,7 @@ server.get("/nextpage",(req,res)=>{
 
 
 //功能八:发送评论
-server.post("/addcomment",(req,res)=>{
+server.post("/addcomment", (req, res) => {
   //1:获取参数 nid 新闻编号 content评论内容
   var nid = req.body.nid;
   var content = req.body.content;
@@ -339,7 +335,7 @@ server.get("/getShopCart",(req,res)=>{
 });
 
 //功能十一:删除购物车中某个商品
-server.post("/removeItem",(req,res)=>{
+server.post("/removeItem", (req, res) => {
   var id = req.body.id;
   var sql = " DELETE FROM eaterytwo_cart";
   sql+=" WHERE id = ?";
