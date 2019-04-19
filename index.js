@@ -17,17 +17,6 @@ var pool=mysql.createPool({
 // 3.创建express对象
 var server = express();
 //3.1配置允许访问列 脚手架8080//跨域
-server.use(cors({
-    origin:[
-      "http://127.0.0.1:8082",
-      "http://localhost:8082",
-      "http://127.0.0.1:8081",
-      "http://localhost:8081",
-      "http://127.0.0.1:8080",
-      "http://localhost:8080"
-    ],
-    credentials:true
-}));
 
 //3.1.1//引入session模块
 const session = require("express-session");
