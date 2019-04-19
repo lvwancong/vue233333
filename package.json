@@ -1,0 +1,33 @@
+{
+  "name": "vue233333",
+  "version": "1.0.0",
+  "description": "手机App大致模块",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lvwancong/vue233333.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lvwancong/vue233333/issues"
+  },
+  "homepage": "https://github.com/lvwancong/vue233333#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "express-session": "^1.16.1",
+    "mint-ui": "^2.2.13",
+    "mysql": "^2.17.1",
+    "vue": "^2.6.10",
+    "vue-resource": "^1.5.1",
+    "vue-router": "^3.0.6",
+    "vuex": "^3.1.0"
+  }
+}
