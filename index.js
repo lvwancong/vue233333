@@ -271,10 +271,10 @@ server.get("/nextpage",(req,res)=>{
 
 
 //功能八:发送评论
-server.post("/addcomment",(req,res)=>{
+server.get("/addcomment",(req,res)=>{
   //1:获取参数 nid 新闻编号 content评论内容
-  var nid = req.body.nid;
-  var content = req.body.content;
+  var nid = req.query.nid;
+  var content = req.query.content;
   var uname = req.session.uname;
   //2:sql
   var sql = "INSERT INTO eaterytwo_comment VALUES(null,?,?,?,now())";
@@ -338,8 +338,8 @@ server.get("/getShopCart",(req,res)=>{
 });
 
 //功能十一:删除购物车中某个商品
-server.post("/removeItem",(req,res)=>{
-  var id = req.body.id;
+server.get("/removeItem",(req,res)=>{
+  var id = req.query.id;
   var sql = " DELETE FROM eaterytwo_cart";
   sql+=" WHERE id = ?";
   id = parseInt(id);
