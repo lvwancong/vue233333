@@ -17,7 +17,6 @@ var pool=mysql.createPool({
 // 3.创建express对象
 var server = express();
 //3.1配置允许访问列 脚手架8080//跨域
-
 //3.1.1//引入session模块
 const session = require("express-session");
 
@@ -40,8 +39,7 @@ server.use(bodyParser.urlencoded({
     extended:false
 }))
 //4.为express对象绑定监听端口 3000
-server.listen(5050, (err) => {
-	if(err) throw err;
+server.listen(5050, () => {
 	console.log('yes');
 });
 // 3.2配置静态文件的目录public
@@ -58,50 +56,40 @@ server.use(express.static("public"));
 //6.返回客户数据
 //登录
 server.post("/login",(req,res)=>{
-    var u=req.body.uname;
-    var p=req.body.upwd;
-    // console.log(u+":"+p);
-    var sql = "select Uid,Uname from eaterytwo_userbasicinformation where Uname=? and Upwd=?";
-    pool.query(sql,[u,p],(err,result)=>{
+    var uname = req.body.uname;
+    var upwd = req.body.upwd;
+    var sql = "select uid,uname from eaterytwo_userbasicinformation where uname = ? and upwd = ?";
+    pool.query(sql, [uname, upwd], (err, result) => {
         if(err) throw err;
-        if(result.length==0){
-            res.send({
-                code: -1,
-                msg: "用户名或密码错误"
-            });
-        }else if(result.length!=0){
+        if(result.length == 0){
+            res.send({code: -1,msg: "用户名或密码错误"});
+        }else if(result.length > 0){
           //登陆成功
           //获取用户id
-          // console.log(result);
-          // console.log(result[0]);
-          // console.log(result[0].Uid);
-          var uid = result[0].Uid;
-          var Uname = result[0].Uname;
+          var uid = result[0].uid;
+          var uname = result[0].uname;
           // console.log(uid);
          
           //保存session对象中
           req.session.uid = uid;
-          req.session.uname = Uname;
+          req.session.uname = uname;
           // console.log(req.session.uid);
-            res.send({
-                code: 1,
-                data:result
-            });
+          res.send({code: 1,data:result});
         }
     })
 });
 //功能3.2 查重
 server.post('/inquire', (req, res) => {
-	var u = req.body.uname;
+  var uname = req.body.uname;
 	//数据库查询数据
-	var sql="SELECT Uname FROM eaterytwo_userbasicinformation where Uname=?";
-	pool.query(sql,[u],(err,result)=>{
+	var sql = "SELECT uname FROM eaterytwo_userbasicinformation where uname=?";
+	pool.query(sql, [uname], (err, result) => {
 		if(err) throw err;
-		if(result.length>0){
-            res.send({code: -1,data:result});
-		}else{
-			res.send({code: 1,data:result});
-		}
+    if (result.length > 0) {
+      res.send({ code: -1, data: result });
+    } else {
+      res.send({ code: 1, data: result });
+    }
 	});	
 });
 //功能3.3 用户头像获取 eaterytwo_Userhead
@@ -122,7 +110,7 @@ server.get("/Userhead", (req, res) => {
       //sql语句执行完毕并且返回解果
       if(result.length==0){
         // insert
-        var Uimg="img/Userhead/xinling.jpg";
+        Uimg="img/Userhead/xinling.jpg";
         var sql = `insert into eaterytwo_Userhead`;
         sql+=` values(null,${uid},'${Uimg}')`;
         pool.query(sql,(err,result)=>{
@@ -142,20 +130,24 @@ server.get("/Userhead", (req, res) => {
 
 //功能四：注册
 server.post("/register",(req,res)=>{
-    var u=req.body.uname;
-    var p=req.body.upwd;
-    var eil = req.body.uemail;
-    var t = req.body.uphone;
-
+    var uname = req.body.uname;
+    var upwd = req.body.upwd;
+    var uemail = req.body.uemail;
+    var uphone = req.body.uphone;
+    if(!uname){res.send("用户名为空");return;}
+    if(!upwd){res.send("密码为空");return;}
+    if(!uemail){res.send("email为空");return;}
+    if(!uphone){res.send("号码为空");return;}
     //数据库修改数据
     var sql = "insert into eaterytwo_userbasicinformation values(null,?,?,?,?)"
-    pool.query(sql,[u,p,eil,t],(err,result)=>{
+    pool.query(sql, [uname, upwd, uemail, uphone], (err, result) => {
         if(err) throw err;
-         res.send({
-             code: 1,
-             data: result
-         });
-    })
+        if(result.affectedRows > 0){
+          res.send({code: 1,data: '注册成功'});
+        }else{
+          res.send({code: -1,data: '注册失败'});
+        }
+      })
 });
 
 //功能一：首页轮播图
