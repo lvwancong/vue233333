@@ -17,6 +17,7 @@ var pool=mysql.createPool({
 // 3.创建express对象
 var server = express();
 //3.1配置允许访问列 脚手架8080//跨域
+
 //3.1.1//引入session模块
 const session = require("express-session");
 
@@ -59,6 +60,7 @@ server.use(express.static("public"));
 server.post("/login",(req,res)=>{
     var u=req.body.uname;
     var p=req.body.upwd;
+    // console.log(u+":"+p);
     var sql = "select Uid,Uname from eaterytwo_userbasicinformation where Uname=? and Upwd=?";
     pool.query(sql,[u,p],(err,result)=>{
         if(err) throw err;
@@ -90,16 +92,16 @@ server.post("/login",(req,res)=>{
 });
 //功能3.2 查重
 server.post('/inquire', (req, res) => {
-  var u = req.body.uname;
+	var u = req.body.uname;
 	//数据库查询数据
 	var sql="SELECT Uname FROM eaterytwo_userbasicinformation where Uname=?";
 	pool.query(sql,[u],(err,result)=>{
 		if(err) throw err;
-    if (result.length > 0) {
-      res.send({ code: -1, data: result });
-    } else {
-      res.send({ code: 1, data: result });
-    }
+		if(result.length>0){
+            res.send({code: -1,data:result});
+		}else{
+			res.send({code: 1,data:result});
+		}
 	});	
 });
 //功能3.3 用户头像获取 eaterytwo_Userhead
@@ -120,7 +122,7 @@ server.get("/Userhead", (req, res) => {
       //sql语句执行完毕并且返回解果
       if(result.length==0){
         // insert
-        Uimg="img/Userhead/xinling.jpg";
+        var Uimg="img/Userhead/xinling.jpg";
         var sql = `insert into eaterytwo_Userhead`;
         sql+=` values(null,${uid},'${Uimg}')`;
         pool.query(sql,(err,result)=>{
@@ -144,10 +146,7 @@ server.post("/register",(req,res)=>{
     var p=req.body.upwd;
     var eil = req.body.uemail;
     var t = req.body.uphone;
-    if(!u){res.send("用户名不存在");return;}
-    if(!p){res.send("密码不存在");return;}
-    if(!eil){res.send("email不存在");return;}
-    if(!t){res.send("号码不存在");return;}
+
     //数据库修改数据
     var sql = "insert into eaterytwo_userbasicinformation values(null,?,?,?,?)"
     pool.query(sql,[u,p,eil,t],(err,result)=>{
