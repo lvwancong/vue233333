@@ -56,7 +56,7 @@ server.use(express.static("public"));
 //5.获取数据库返回结果
 //6.返回客户数据
 //登录
-server.get("/login",(req,res)=>{
+server.post("/login",(req,res)=>{
     var uname = req.body.uname;
     var upwd = req.body.upwd;
     console.log(uname,upwd);
