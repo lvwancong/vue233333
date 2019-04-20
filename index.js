@@ -89,17 +89,17 @@ server.post("/login",(req,res)=>{
     })
 });
 //功能3.2 查重
-server.get('/inquire', (req, res) => {
-	var u = req.query.uname;
+server.post('/inquire', (req, res) => {
+  var u = req.body.uname;
 	//数据库查询数据
 	var sql="SELECT Uname FROM eaterytwo_userbasicinformation where Uname=?";
 	pool.query(sql,[u],(err,result)=>{
 		if(err) throw err;
-		if(result.length>0){
-            res.send({code: -1,result:-1});
-		}else{
-			res.send({code: 1,result:1});
-		}
+    if (result.length > 0) {
+      res.send({ code: -1, data: result });
+    } else {
+      res.send({ code: 1, data: result });
+    }
 	});	
 });
 //功能3.3 用户头像获取 eaterytwo_Userhead
@@ -139,11 +139,11 @@ server.get("/Userhead", (req, res) => {
 
 
 //功能四：注册
-server.get("/register",(req,res)=>{
+server.post("/register",(req,res)=>{
     var u=req.body.uname;
     var p=req.body.upwd;
-    var eil = req.query.uemail;
-    var t = req.query.uphone;
+    var eil = req.body.uemail;
+    var t = req.body.uphone;
     if(!u){res.send("用户名不存在");return;}
     if(!p){res.send("密码不存在");return;}
     if(!eil){res.send("email不存在");return;}
