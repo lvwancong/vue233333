@@ -7,11 +7,12 @@ const cors = require('cors');
 
 //创建连接池
 var pool=mysql.createPool({
-  host: process.env.MYSQL_HOST,
-  port: process.env.MYSQL_PORT,
-  user: process.env.ACCESSKEY,
-  password: process.env.SECRETKEY,
-  database: 'app_' + process.env.APPNAME, //使用的数据库
+  host: process.env.MYSQL_HOST || '127.0.0.1',
+  port: process.env.MYSQL_PORT || 3306,
+  user: process.env.ACCESSKEY || 'root',
+  password: process.env.SECRETKEY || '',
+  database: 'eaterytwo',
+  // database: 'app_' + process.env.APPNAME, //使用的数据库
 	connectionLimit:20  //设置连接池的数量
 });
 // 3.创建express对象

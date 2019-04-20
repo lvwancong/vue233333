@@ -2,7 +2,7 @@
   "name": "vue233333",
   "version": "1.0.0",
   "description": "手机App大致模块",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
