@@ -1,8 +1,7 @@
 //引入二个模块 mysql express
 const express = require('express');
 const mysql = require('mysql');
-//1.1引入模块 cors 
-const cors = require('cors');
+const pool = require('pool.js');
 // 3.创建express对象
 var server = express();
 //3.1配置允许访问列 脚手架8080//跨域
