@@ -105,8 +105,8 @@ server.get("/Userhead", (req, res) => {
    var uid = req.session.uid;
    //2:sql
     // 4:创建sql语句查询当前数据库是否存在
-  var sql = "select Uimg from eaterytwo_Userhead";
-  sql += " where Uid = ?";
+  var sql = "select uimg from eaterytwo_Userhead";
+  sql += " where uid = ?";
   pool.query(sql, [uid], (err, result) => {
       //回调函数:什么时候执行函数
       //sql语句执行完毕并且返回解果
@@ -114,15 +114,12 @@ server.get("/Userhead", (req, res) => {
         // insert
         Uimg="img/Userhead/xinling.jpg";
         var sql = `insert into eaterytwo_Userhead`;
-        sql+=` values(null,${uid},'${Uimg}')`;
+        sql+=` values(null,${uid},'${uimg}')`;
         pool.query(sql,(err,result)=>{
           if(err) throw err;
           res.send({ code: 1, data: [Uimg]})
         });
       }else{
-        // select
-        // var sql = `select Uid,Uimg from eaterytwo_Userhead`;
-        // sql+=` where Uid = ${uid}`;
         res.send({ code: 1, data: result })
       }
   });
@@ -155,7 +152,7 @@ server.post("/register",(req,res)=>{
 //功能一：首页轮播图
 server.get("/imglist",(req,res)=>{
     //查询数据库
-    sql = "select Wsrc from eaterytwo_WheelPlanting";
+    sql = "select wsrc from eaterytwo_WheelPlanting";
     pool.query(sql, (err, result) => {
       if (err) throw err;
       res.send({code:1,data:result});
@@ -164,7 +161,7 @@ server.get("/imglist",(req,res)=>{
 //功能二：首页九宫格
 server.get("/grid", (req,res) => {
     //查询数据库
-    sql = "select Sname,Ssrc from eaterytwo_SPFPC";
+    sql = "select sname,ssrc from eaterytwo_SPFPC";
     pool.query(sql, (err, result) => {
       if (err) throw err;
       res.send({code:1,data:result});
@@ -173,7 +170,7 @@ server.get("/grid", (req,res) => {
 //功能五：商品栏
 server.get("/Cbar", (req,res) => {
     //查询数据库
-    sql = "select Cname,Cmoney,Csubtitle,Cdetails,Csrc,Cimg,Chref from eaterytwo_Commoditydetails";
+    sql = "select cname,cmoney,csubtitle,cdetails,csrc,cimg,chref from eaterytwo_Commoditydetails";
     pool.query(sql, (err, result) => {
       if (err) throw err;
       res.send({code:1,data:result});
@@ -191,7 +188,7 @@ server.get("/news", (req, res) => {
     if (!pageSize) {
         pageSize = 4
     }
-    var sql = " SELECT Cid,Cname,Cmoney,Csrc";
+    var sql = " SELECT cid,cname,cmoney,csrc";
     sql += " FROM eaterytwo_Commoditydetails";
     sql += " LIMIT ?,?";
     var offset = (pno - 1) * pageSize;
@@ -214,9 +211,9 @@ server.get("/newsInfo",(req,res)=>{
      res.send({code:-1,msg:"参数格式不正确"});
      return;
   }
-  var sql = "SELECT Cid,Cname,Cmoney";
-  sql += " ,Csubtitle,Cdetails,Csrc,Cimg";
-  sql += " FROM eaterytwo_Commoditydetails WHERE Cid = ?";
+  var sql = "SELECT cid,cname,cmoney";
+  sql += ",csubtitle,cdetails,csrc,cimg";
+  sql += " FROM eaterytwo_Commoditydetails WHERE cid = ?";
   nid = parseInt(nid);
   pool.query(sql,[nid],(err,result)=>{
     if(err)throw err;
@@ -235,9 +232,9 @@ server.get("/Previouspage",(req,res)=>{
      res.send({code:-1,msg:"参数格式不正确"});
      return;
   }
-  var sql = "SELECT Cid,Cname,Cmoney";
-  sql += " ,Csubtitle,Cdetails,Csrc,Cimg";
-  sql += " FROM eaterytwo_Commoditydetails WHERE Cid = ?";
+  var sql = "SELECT cid,cname,cmoney";
+  sql += ",csubtitle,cdetails,csrc,cimg";
+  sql += " FROM eaterytwo_Commoditydetails WHERE cid = ?";
   nid = parseInt(nid);
   pool.query(sql,[nid],(err,result)=>{
     if(err)throw err;
@@ -254,9 +251,9 @@ server.get("/nextpage",(req,res)=>{
      res.send({code:-1,msg:"参数格式不正确"});
      return;
   }
-  var sql = "SELECT Cid,Cname,Cmoney";
-  sql += " ,Csubtitle,Cdetails,Csrc,Cimg";
-  sql += " FROM eaterytwo_Commoditydetails WHERE Cid = ?";
+  var sql = "SELECT cid,cname,cmoney";
+  sql += ",csubtitle,cdetails,csrc,cimg";
+  sql += " FROM eaterytwo_Commoditydetails WHERE cid = ?";
   nid = parseInt(nid);
   pool.query(sql,[nid],(err,result)=>{
     if(err)throw err;
@@ -512,9 +509,9 @@ server.get("/search",(req,res)=>{
   //1:获取参数并且默认值
   var kwords = req.query.kwords
   //2:创建sql
-  var sql = "SELECT Cid,Cname,Cmoney,Csubtitle,Cdetails,Csrc,Cimg";
+  var sql = "SELECT cid,cname,cmoney,csubtitle,cdetails,csrc,cimg";
   sql += " FROM eaterytwo_Commoditydetails";
-  sql += " WHERE Cname LIKE concat('%',?,'%')";
+  sql += " WHERE cname LIKE concat('%',?,'%')";
   pool.query(sql, [kwords], (err, result) => {
     if(err)throw err;
     if(result.length>0){
@@ -537,7 +534,7 @@ server.get("/Uacquisition",(req,res)=>{
   var uname = req.session.uname;
   // console.log(uid);
   // console.log(uname);
-  var sql = "select Uid,Uname from eaterytwo_userbasicinformation where Uid=? and Uname=?";
+  var sql = "select uid,uname from eaterytwo_userbasicinformation where uid=? and uname=?";
     pool.query(sql,[uid,uname],(err,result)=>{
         if(err) throw err;
         if(result.length==0){
@@ -565,7 +562,7 @@ server.get("/Cancellationlanding", (req, res) => {
   var uname = req.session.uname;
   // console.log(uid);
   // console.log(uname);
-  var sql = "select Uid,Uname from eaterytwo_userbasicinformation where Uid=? and Uname=?";
+  var sql = "select uid,uname from eaterytwo_userbasicinformation where uid=? and uname=?";
     pool.query(sql,[uid,uname],(err,result)=>{
         if(err) throw err;
         if(result.length==0){
