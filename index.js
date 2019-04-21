@@ -56,9 +56,9 @@ server.use(express.static("public"));
 //5.获取数据库返回结果
 //6.返回客户数据
 //登录
-server.post("/login",(req,res)=>{
-    var uname = req.body.uname;
-    var upwd = req.body.upwd;
+server.get("/login",(req,res)=>{
+    var uname = req.query.uname;
+    var upwd = req.query.upwd;
     console.log(uname,upwd);
     var sql = "select uid,uname from eaterytwo_userbasicinformation where uname = ? and upwd = ?";
     pool.query(sql, [uname, upwd], (err, result) => {
