@@ -46,7 +46,6 @@ server.use(express.static("public"));
 server.get("/login",(req,res)=>{
     var uname = req.query.uname;
     var upwd = req.query.upwd;
-    console.log(uname,upwd);
     var sql = "select uid,uname from eaterytwo_userbasicinformation where uname = ? and upwd = ?";
     pool.query(sql, [uname, upwd], (err, result) => {
         if(err) throw err;
