@@ -67,8 +67,8 @@ server.get("/login",(req,res)=>{
     })
 });
 //功能3.2 查重
-server.post('/inquire', (req, res) => {
-  var uname = req.body.uname;
+server.get('/inquire', (req, res) => {
+  var uname = req.query.uname;
 	//数据库查询数据
 	var sql = "SELECT uname FROM eaterytwo_userbasicinformation where uname=?";
 	pool.query(sql, [uname], (err, result) => {
