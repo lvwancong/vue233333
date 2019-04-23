@@ -56,7 +56,7 @@ server.post("/login",(req,res)=>{
           //获取用户id
           var uid = result[0].uid;
           var uname = result[0].uname;
-          console.log(uid);
+          // console.log(uid);
          
           //保存session对象中
           req.session.uid = uid;
