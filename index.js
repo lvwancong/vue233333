@@ -89,8 +89,8 @@ server.get('/inquire', (req, res) => {
     }
 	});	
 });
-//功能3.3 用户头像获取 eaterytwo_Userhead
-//功能3.3 用户头像获取 eaterytwo_Userhead
+//功能3.3 用户头像获取 eateryTwo_Userhead
+//功能3.3 用户头像获取 eateryTwo_Userhead
 server.get("/Userhead", (req, res) => {
   if(!req.session.uid){
     res.send({code:-1,data:[],msg:"请登录"});
@@ -100,7 +100,7 @@ server.get("/Userhead", (req, res) => {
    var uid = req.session.uid;
    //2:sql
     // 4:创建sql语句查询当前数据库是否存在
-  var sql = "select Uimg from eaterytwo_Userhead";
+  var sql = "select Uimg from eateryTwo_Userhead";
   sql += " where Uid = ?";
   pool.query(sql, [uid], (err, result) => {
       //回调函数:什么时候执行函数
@@ -108,7 +108,7 @@ server.get("/Userhead", (req, res) => {
       if(result.length==0){
         // insert
         Uimg="img/Userhead/xinling.jpg";
-        var sql = `insert into eaterytwo_Userhead`;
+        var sql = `insert into eateryTwo_Userhead`;
         sql+=` values(null,${uid},'${Uimg}')`;
         pool.query(sql,(err,result)=>{
           if(err) throw err;
@@ -117,7 +117,7 @@ server.get("/Userhead", (req, res) => {
         });
       }else{
         // select
-        // var sql = `select Uid,Uimg from eaterytwo_Userhead`;
+        // var sql = `select Uid,Uimg from eateryTwo_Userhead`;
         // sql+=` where Uid = ${uid}`;
         res.send({ code: 1, data: result })
       }
