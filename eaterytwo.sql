@@ -34,14 +34,14 @@ insert into eateryTwo_SPFPC values
 #登录Signin
 #注册register
 #用户基本信息UserBasicInformation
-CREATE TABLE eateryTwo_UserBasicInformation(
+CREATE TABLE eateryTwo_userbasicinformation(
   uid INT PRIMARY KEY AUTO_INCREMENT,
   uname VARCHAR(128),#用户名称
   upwd VARCHAR(128),   #用户密码
   uemail VARCHAR(128), #用户邮箱
   uphone VARCHAR(128) #用户电话
 );
-insert into eateryTwo_UserBasicInformation values
+insert into eateryTwo_userbasicinformation values
 (null,"dingding","123456","1480181023@qq.com","13723267581"),
 (null,"dangdang","123456","15137831311@163.com","18136967581");
 
