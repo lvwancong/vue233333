@@ -34,24 +34,24 @@ insert into eaterytwo_SPFPC values
 #登录Signin
 #注册register
 #用户基本信息UserBasicInformation
-CREATE TABLE eaterytwo_User(
+CREATE TABLE eateryTwo_User(
   uid INT PRIMARY KEY AUTO_INCREMENT,
   uname VARCHAR(128),#用户名称
   upwd VARCHAR(128),   #用户密码
   uemail VARCHAR(128), #用户邮箱
   uphone VARCHAR(128) #用户电话
 );
-insert into eaterytwo_User values
+insert into eateryTwo_User values
 (null,"dingding","123456","1480181023@qq.com","13723267581"),
 (null,"dangdang","123456","15137831311@163.com","18136967581");
 
 #用户头像Userhead
-CREATE TABLE eaterytwo_Userhead(
+CREATE TABLE eateryTwo_Userhead(
   id INT PRIMARY KEY AUTO_INCREMENT,
   uid INT, #用户编号
   uimg VARCHAR(128) #用户头像
 );
-insert into eaterytwo_Userhead values
+insert into eateryTwo_Userhead values
 (null,"1","img/Userhead/01.jpg"),
 (null,"2","img/Userhead/02.jpg");
 
