@@ -116,9 +116,6 @@ server.get("/Userhead", (req, res) => {
           return;
         });
       }else{
-        // select
-        // var sql = `select Uid,Uimg from eaterytwo_Userhead`;
-        // sql+=` where Uid = ${uid}`;
         res.send({ code: 1, data: result })
       }
   });
