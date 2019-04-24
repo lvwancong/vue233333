@@ -46,7 +46,7 @@ server.use(express.static("public"));
 server.post("/login",(req,res)=>{
     var uname = req.body.uname;
     var upwd = req.body.upwd;
-    var sql = "select uid,uname from eateryTwo_user where uname = ? and upwd = ?";
+    var sql = "select uid,uname from eateryTwo_User where uname = ? and upwd = ?";
     pool.query(sql, [uname, upwd], (err, result) => {
         // if(err) throw err;
         if(err){
@@ -74,7 +74,7 @@ server.post("/login",(req,res)=>{
 server.get('/inquire', (req, res) => {
   var uname = req.query.uname;
 	//数据库查询数据
-	var sql = "SELECT uname FROM eateryTwo_user where uname=?";
+	var sql = "SELECT uname FROM eateryTwo_User where uname=?";
 	pool.query(sql, [uname], (err, result) => {
     // if(err) throw err;
     if (err) {
@@ -137,7 +137,7 @@ server.post("/register",(req,res)=>{
     if(!uemail){res.send("email为空");return;}
     if(!uphone){res.send("号码为空");return;}
     //数据库修改数据
-    var sql = "insert into eateryTwo_user values(null,?,?,?,?)"
+    var sql = "insert into eateryTwo_User values(null,?,?,?,?)"
     pool.query(sql, [uname, upwd, uemail, uphone], (err, result) => {
         if(err){
           console.log(err);
@@ -537,7 +537,7 @@ server.get("/Uacquisition",(req,res)=>{
   var uname = req.session.uname;
   // console.log(uid);
   // console.log(uname);
-  var sql = "select Uid,Uname from eateryTwo_user where Uid=? and Uname=?";
+  var sql = "select Uid,Uname from eateryTwo_User where Uid=? and Uname=?";
     pool.query(sql,[uid,uname],(err,result)=>{
         if(err) throw err;
         if(result.length==0){
@@ -565,7 +565,7 @@ server.get("/Cancellationlanding", (req, res) => {
   var uname = req.session.uname;
   // console.log(uid);
   // console.log(uname);
-  var sql = "select Uid,Uname from eateryTwo_user where Uid=? and Uname=?";
+  var sql = "select Uid,Uname from eateryTwo_User where Uid=? and Uname=?";
     pool.query(sql,[uid,uname],(err,result)=>{
         if(err) throw err;
         if(result.length==0){
