@@ -6,7 +6,7 @@ var pool = mysql.createPool({
     user: process.env.ACCESSKEY || 'root',
     password: process.env.SECRETKEY || '',
     //database: 'eaterytwo',
-    database: 'app_' + process.env.APPNAME, //使用的数据库
+     database: 'app_' + process.env.APPNAME, //使用的数据库
     connectionLimit: 20 //设置连接池的数量
 });
 
