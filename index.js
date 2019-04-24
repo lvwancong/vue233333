@@ -48,7 +48,11 @@ server.post("/login",(req,res)=>{
     var upwd = req.body.upwd;
     var sql = "select uid,uname from eaterytwo_userbasicinformation where uname = ? and upwd = ?";
     pool.query(sql, [uname, upwd], (err, result) => {
-        if(err) throw err;
+        // if(err) throw err;
+        if(err){
+          console.log(err);
+          res.send({code:-1,msg:err.message})
+        }
         if(result.length == 0){
             res.send({code: -1,msg: "用户名或密码错误"});
         }else if(result.length > 0){
@@ -72,7 +76,12 @@ server.get('/inquire', (req, res) => {
 	//数据库查询数据
 	var sql = "SELECT uname FROM eaterytwo_userbasicinformation where uname=?";
 	pool.query(sql, [uname], (err, result) => {
-		if(err) throw err;
+    // if(err) throw err;
+    if (err) {
+      console.log(err);
+      res.send({ code: -1, msg: err.message });
+      return;
+    }
     if (result.length > 0) {
       res.send({ code: -1, data: result });
     } else {
@@ -104,6 +113,7 @@ server.get("/Userhead", (req, res) => {
         pool.query(sql,(err,result)=>{
           if(err) throw err;
           res.send({ code: 1, data: [Uimg]})
+          return;
         });
       }else{
         // select
@@ -129,7 +139,11 @@ server.post("/register",(req,res)=>{
     //数据库修改数据
     var sql = "insert into eaterytwo_userbasicinformation values(null,?,?,?,?)"
     pool.query(sql, [uname, upwd, uemail, uphone], (err, result) => {
-        if(err) throw err;
+        if(err){
+          console.log(err);
+          res.send({code:-1,msg:err.message});
+          return;
+        }
         if(result.affectedRows > 0){
           res.send({code: 1,data: '注册成功'});
         }else{
