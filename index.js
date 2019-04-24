@@ -46,7 +46,7 @@ server.use(express.static("public"));
 server.post("/login",(req,res)=>{
     var uname = req.body.uname;
     var upwd = req.body.upwd;
-    var sql = "select uid,uname from eateryTwo_userbasicinformation where uname = ? and upwd = ?";
+    var sql = "select uid,uname from eaterytwo_user where uname = ? and upwd = ?";
     pool.query(sql, [uname, upwd], (err, result) => {
         // if(err) throw err;
         if(err){
@@ -74,7 +74,7 @@ server.post("/login",(req,res)=>{
 server.get('/inquire', (req, res) => {
   var uname = req.query.uname;
 	//数据库查询数据
-	var sql = "SELECT uname FROM eateryTwo_userbasicinformation where uname=?";
+	var sql = "SELECT uname FROM eaterytwo_user where uname=?";
 	pool.query(sql, [uname], (err, result) => {
     // if(err) throw err;
     if (err) {
@@ -89,8 +89,8 @@ server.get('/inquire', (req, res) => {
     }
 	});	
 });
-//功能3.3 用户头像获取 eateryTwo_Userhead
-//功能3.3 用户头像获取 eateryTwo_Userhead
+//功能3.3 用户头像获取 eaterytwo_Userhead
+//功能3.3 用户头像获取 eaterytwo_Userhead
 server.get("/Userhead", (req, res) => {
   if(!req.session.uid){
     res.send({code:-1,data:[],msg:"请登录"});
@@ -100,7 +100,7 @@ server.get("/Userhead", (req, res) => {
    var uid = req.session.uid;
    //2:sql
     // 4:创建sql语句查询当前数据库是否存在
-  var sql = "select Uimg from eateryTwo_Userhead";
+  var sql = "select Uimg from eaterytwo_Userhead";
   sql += " where Uid = ?";
   pool.query(sql, [uid], (err, result) => {
       //回调函数:什么时候执行函数
@@ -108,7 +108,7 @@ server.get("/Userhead", (req, res) => {
       if(result.length==0){
         // insert
         Uimg="img/Userhead/xinling.jpg";
-        var sql = `insert into eateryTwo_Userhead`;
+        var sql = `insert into eaterytwo_Userhead`;
         sql+=` values(null,${uid},'${Uimg}')`;
         pool.query(sql,(err,result)=>{
           if(err) throw err;
@@ -116,6 +116,9 @@ server.get("/Userhead", (req, res) => {
           return;
         });
       }else{
+        // select
+        // var sql = `select Uid,Uimg from eaterytwo_Userhead`;
+        // sql+=` where Uid = ${uid}`;
         res.send({ code: 1, data: result })
       }
   });
@@ -134,7 +137,7 @@ server.post("/register",(req,res)=>{
     if(!uemail){res.send("email为空");return;}
     if(!uphone){res.send("号码为空");return;}
     //数据库修改数据
-    var sql = "insert into eateryTwo_userbasicinformation values(null,?,?,?,?)"
+    var sql = "insert into eaterytwo_user values(null,?,?,?,?)"
     pool.query(sql, [uname, upwd, uemail, uphone], (err, result) => {
         if(err){
           console.log(err);
@@ -152,7 +155,7 @@ server.post("/register",(req,res)=>{
 //功能一：首页轮播图
 server.get("/imglist",(req,res)=>{
     //查询数据库
-    sql = "select Wsrc from eateryTwo_WheelPlanting";
+    sql = "select Wsrc from eaterytwo_WheelPlanting";
     pool.query(sql, (err, result) => {
       if (err) throw err;
       res.send({code:1,data:result});
@@ -161,7 +164,7 @@ server.get("/imglist",(req,res)=>{
 //功能二：首页九宫格
 server.get("/grid", (req,res) => {
     //查询数据库
-    sql = "select Sname,Ssrc from eateryTwo_SPFPC";
+    sql = "select Sname,Ssrc from eaterytwo_SPFPC";
     pool.query(sql, (err, result) => {
       if (err) throw err;
       res.send({code:1,data:result});
@@ -170,7 +173,7 @@ server.get("/grid", (req,res) => {
 //功能五：商品栏
 server.get("/Cbar", (req,res) => {
     //查询数据库
-    sql = "select Cname,Cmoney,Csubtitle,Cdetails,Csrc,Cimg,Chref from eateryTwo_Commoditydetails";
+    sql = "select Cname,Cmoney,Csubtitle,Cdetails,Csrc,Cimg,Chref from eaterytwo_Commoditydetails";
     pool.query(sql, (err, result) => {
       if (err) throw err;
       res.send({code:1,data:result});
@@ -189,7 +192,7 @@ server.get("/news", (req, res) => {
         pageSize = 4
     }
     var sql = " SELECT Cid,Cname,Cmoney,Csrc";
-    sql += " FROM eateryTwo_Commoditydetails";
+    sql += " FROM eaterytwo_Commoditydetails";
     sql += " LIMIT ?,?";
     var offset = (pno - 1) * pageSize;
     pageSize = parseInt(pageSize);
@@ -213,7 +216,7 @@ server.get("/newsInfo",(req,res)=>{
   }
   var sql = "SELECT Cid,Cname,Cmoney";
   sql += " ,Csubtitle,Cdetails,Csrc,Cimg";
-  sql += " FROM eateryTwo_Commoditydetails WHERE Cid = ?";
+  sql += " FROM eaterytwo_Commoditydetails WHERE Cid = ?";
   nid = parseInt(nid);
   pool.query(sql,[nid],(err,result)=>{
     if(err)throw err;
@@ -234,7 +237,7 @@ server.get("/Previouspage",(req,res)=>{
   }
   var sql = "SELECT Cid,Cname,Cmoney";
   sql += " ,Csubtitle,Cdetails,Csrc,Cimg";
-  sql += " FROM eateryTwo_Commoditydetails WHERE Cid = ?";
+  sql += " FROM eaterytwo_Commoditydetails WHERE Cid = ?";
   nid = parseInt(nid);
   pool.query(sql,[nid],(err,result)=>{
     if(err)throw err;
@@ -253,7 +256,7 @@ server.get("/nextpage",(req,res)=>{
   }
   var sql = "SELECT Cid,Cname,Cmoney";
   sql += " ,Csubtitle,Cdetails,Csrc,Cimg";
-  sql += " FROM eateryTwo_Commoditydetails WHERE Cid = ?";
+  sql += " FROM eaterytwo_Commoditydetails WHERE Cid = ?";
   nid = parseInt(nid);
   pool.query(sql,[nid],(err,result)=>{
     if(err)throw err;
@@ -269,7 +272,7 @@ server.post("/addcomment",(req,res)=>{
   var content = req.body.content;
   var uname = req.session.uname;
   //2:sql
-  var sql = "INSERT INTO eateryTwo_comment VALUES(null,?,?,?,now())";
+  var sql = "INSERT INTO eaterytwo_comment VALUES(null,?,?,?,now())";
   pool.query(sql,[nid,uname,content],(err,result)=>{
     if(err)throw err;
     res.send({code:1,data:result,msg:"添加成功"})    
@@ -291,7 +294,7 @@ server.get("/getComment", (req, res) => {
     }
     //2:sql
     var sql = " SELECT id,nid,content,uname,ctime";
-    sql += " FROM eateryTwo_comment";
+    sql += " FROM eaterytwo_comment";
     sql += " WHERE nid = ?";
     sql += " LIMIT ?,?";
     var offset = (pno - 1) * pageSize;
@@ -319,7 +322,7 @@ server.get("/getShopCart",(req,res)=>{
   var uid = req.session.uid;
    //2:sql
   var sql = "SELECT id,pid,price,uid,pname,pimg,count";
-   sql += " FROM eateryTwo_cart";
+   sql += " FROM eaterytwo_cart";
    sql+=" WHERE uid = ?";
    pool.query(sql,[uid],(err,result)=>{
      if(err)throw err;
@@ -332,7 +335,7 @@ server.get("/getShopCart",(req,res)=>{
 //功能十一:删除购物车中某个商品
 server.post("/removeItem",(req,res)=>{
   var id = req.body.id;
-  var sql = " DELETE FROM eateryTwo_cart";
+  var sql = " DELETE FROM eaterytwo_cart";
   sql+=" WHERE id = ?";
   id = parseInt(id);
   pool.query(sql,[id],(err,result)=>{
@@ -352,7 +355,7 @@ server.get("/removeMItem",(req,res)=>{
    //1:参数
    var ids = req.query.ids;
    //2:sql
-   var sql = "DELETE FROM eateryTwo_cart";
+   var sql = "DELETE FROM eaterytwo_cart";
    sql+=" WHERE id IN ("+ids+")";
    //3:json
    pool.query(sql,(err,result)=>{
@@ -371,18 +374,18 @@ server.get("/Purgoods", (req, res) => {
    var price = req.query.price;
    //2:sql
     // 4:创建sql语句查询当前数据库是否存在
-  var sql = "select id from eateryTwo_total";
+  var sql = "select id from eaterytwo_total";
   sql += " where price = ?";
   pool.query(sql, [price], (err, result) => {
       //回调函数:什么时候执行函数
       //sql语句执行完毕并且返回解果
       if(result.length==0){
         // insert
-        var sql = `insert into eateryTwo_total`;
+        var sql = `insert into eaterytwo_total`;
         sql+=` values(null,${price})`;
       }else{
         // select
-        var sql = `select price from eateryTwo_total`;
+        var sql = `select price from eaterytwo_total`;
         sql+=` where price = ${price}`;
       }
       pool.query(sql,(err,result)=>{
@@ -398,7 +401,7 @@ server.get("/commodity", (req, res) => {
    var price = req.query.price;
    //2:sql
     // 4:创建sql语句查询当前数据库是否存在
-  var sql = "select price from eateryTwo_total";
+  var sql = "select price from eaterytwo_total";
   sql += " where price = ?";
   pool.query(sql, [price], (err, result) => {
       //回调函数:什么时候执行函数
@@ -412,9 +415,9 @@ server.get("/commodity", (req, res) => {
 
 //功能十三：用户点击添加购物车按钮
 server.get("/addcart",(req,res)=>{
-  // 0:向数据库表 eateryTwo_cart 添加一列count INT  
-  // ALTER TABLE eateryTwo_cart ADD count INT
-  // UPDATE eateryTwo_cart SET count = 1;
+  // 0:向数据库表 eaterytwo_cart 添加一列count INT  
+  // ALTER TABLE eaterytwo_cart ADD count INT
+  // UPDATE eaterytwo_cart SET count = 1;
   // 1:获取参数 uid pid pname price
   if(!req.session.uid){
     res.send({code:-1,data:[],msg:"请登录"});
@@ -429,18 +432,18 @@ server.get("/addcart",(req,res)=>{
   // 3:如果当前用户未登录，程序停止
   //     返回出错信息  请登录
   // 4:创建sql语句查询当前用户是否添加过此商品
-  var sql = "select id from eateryTwo_cart";
+  var sql = "select id from eaterytwo_cart";
   sql+=" where uid = ? and pid = ?";
   pool.query(sql,[uid,pid],(err,result)=>{
     //回调函数:什么时候执行函数
     //sql语句执行完毕并且返回解果
     if(result.length==0){
       // insert
-      var sql = `insert into eateryTwo_cart`;
+      var sql = `insert into eaterytwo_cart`;
       sql+=` values(null,${uid},${pid},${price},'${pname}','${pimg}',1)`;
     }else{
       // update
-      var sql = `update eateryTwo_cart set`;
+      var sql = `update eaterytwo_cart set`;
       sql+=` count=count+1`;
       sql+=` where uid = ${uid} and pid = ${pid}`;
     }
@@ -450,10 +453,10 @@ server.get("/addcart",(req,res)=>{
     });
   })
   // 5:创建sql语句如果没有查询结果添加此商品
-  var sql = "insert into eateryTwo_cart(id,uid,pid,pname,price,pimg,count)";
+  var sql = "insert into eaterytwo_cart(id,uid,pid,pname,price,pimg,count)";
   sql+="values(null,?,?,?,?,?,?)";
   // x:创建sql语句结果有结果更新数量
-  var sql = "update eateryTwo_cart set count=count+1";
+  var sql = "update eaterytwo_cart set count=count+1";
   sql+=" where uid = ? and pid = ?";
 });
 
@@ -467,20 +470,20 @@ server.get("/addsub",(req,res)=>{
   var price = req.query.price;
   // console.log("price:" + price);
   if (count >1) {
-      var sql = `UPDATE eateryTwo_cart SET count =count-1  WHERE pname = ? and price = ?;`;
+      var sql = `UPDATE eaterytwo_cart SET count =count-1  WHERE pname = ? and price = ?;`;
           pool.query(sql, [pname, price], (err, result) => {
           if(err) throw err;
           res.send({code:1,data:result})
       });
   }else if(count==1){
-    var sql = `UPDATE eateryTwo_cart SET count = ? WHERE pname = ? and price = ?;`;
+    var sql = `UPDATE eaterytwo_cart SET count = ? WHERE pname = ? and price = ?;`;
           pool.query(sql, [count,pname, price], (err, result) => {
           if(err) throw err;
           res.send({code:1,msg:"已经到底啦:<"})
       });
   }else{
     count=1;
-    var sql = `UPDATE eateryTwo_cart SET count = ? WHERE pname = ? and price = ?;`;
+    var sql = `UPDATE eaterytwo_cart SET count = ? WHERE pname = ? and price = ?;`;
           pool.query(sql, [count,pname, price], (err, result) => {
           if(err) throw err;
           res.send({code:1,msg:"已经到底啦:<"})
@@ -496,7 +499,7 @@ server.get("/addaddition", (req, res) => {
   var price = req.query.price;
   // console.log("price:" + price);
   if (count >= 1) {
-      var sql = `UPDATE eateryTwo_cart SET count = count+1 WHERE pname = ? and price = ?;`;
+      var sql = `UPDATE eaterytwo_cart SET count = count+1 WHERE pname = ? and price = ?;`;
           pool.query(sql, [pname, price], (err, result) => {
           if(err) throw err;
           res.send({code:1,data:result})
@@ -510,7 +513,7 @@ server.get("/search",(req,res)=>{
   var kwords = req.query.kwords
   //2:创建sql
   var sql = "SELECT Cid,Cname,Cmoney,Csubtitle,Cdetails,Csrc,Cimg";
-  sql += " FROM eateryTwo_Commoditydetails";
+  sql += " FROM eaterytwo_Commoditydetails";
   sql += " WHERE Cname LIKE concat('%',?,'%')";
   pool.query(sql, [kwords], (err, result) => {
     if(err)throw err;
@@ -534,7 +537,7 @@ server.get("/Uacquisition",(req,res)=>{
   var uname = req.session.uname;
   // console.log(uid);
   // console.log(uname);
-  var sql = "select Uid,Uname from eateryTwo_userbasicinformation where Uid=? and Uname=?";
+  var sql = "select Uid,Uname from eaterytwo_user where Uid=? and Uname=?";
     pool.query(sql,[uid,uname],(err,result)=>{
         if(err) throw err;
         if(result.length==0){
@@ -562,7 +565,7 @@ server.get("/Cancellationlanding", (req, res) => {
   var uname = req.session.uname;
   // console.log(uid);
   // console.log(uname);
-  var sql = "select Uid,Uname from eateryTwo_userbasicinformation where Uid=? and Uname=?";
+  var sql = "select Uid,Uname from eaterytwo_user where Uid=? and Uname=?";
     pool.query(sql,[uid,uname],(err,result)=>{
         if(err) throw err;
         if(result.length==0){
